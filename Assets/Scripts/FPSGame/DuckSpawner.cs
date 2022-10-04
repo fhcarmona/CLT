@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DuckSpawner : MonoBehaviour
@@ -12,6 +11,7 @@ public class DuckSpawner : MonoBehaviour
     // Execute with delay
     public IEnumerator duckCoroutine(int quantity, float delay, float speed)
     {
+        // Spawn the quantity of ducks based on quantity, delay between and speed
         for (int index = 0; index < quantity; index++)
         {
             clone = Instantiate(duck, duck.transform.position, duck.transform.rotation);

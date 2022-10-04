@@ -1,19 +1,21 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class LevelManager : MonoBehaviour
 {
+    // Unity classes variables
     [SerializeField]
     private TextMeshProUGUI startText, scoreText, hitCounterText;
     private DuckSpawner spawner;
     private GameObject buttonGroup, restartButton, aim;
 
+    // Game user interface 
     private float delayBegin, score;
     private int hitCount, missCount, level, unlockedLevels;
 
+    // Level difficulty parameters
     private int[] duckQuantityList = { 3, 4, 5, 6, 8, 10, 12, 14, 17, 20, 23, 26, 30, 34, 38, 42};
     private int[] duckRequiredList = { 1, 1, 2, 2, 4, 4, 6, 6, 8, 8, 12, 12, 16, 16, 24, 24 };
     private float[] duckSpeedList = { 0.1f, 0.11f, 0.12f, 0.13f, 0.15f, 0.17f, 0.19f, 0.21f, 0.24f, 0.27f, 0.30f, 0.33f, 0.37f, 0.41f, 0.45f, 0.49f };
@@ -35,17 +37,18 @@ public class LevelManager : MonoBehaviour
         hitCounterText.gameObject.SetActive(false);
         aim.gameObject.SetActive(false);
 
-        // 
+        // Define which level is playable
         BlockLevels();
     }
 
     private void Update()
     {
+        // Every frame update the score and hit counter
         UpdateScoreText();
         UpdateHitCounterText();
     }
 
-    // Custom methods
+    // Define the delay to start the game and set the ui/gui when delay ended
     IEnumerator BeginDelay(int level)
     {
         // Initial timer user interface
@@ -65,6 +68,7 @@ public class LevelManager : MonoBehaviour
         SetDifficulty(level);
     }
 
+    // Read the user preferences [windows register] and define which level is enabled
     private void BlockLevels()
     {
         LoadGame();
@@ -72,7 +76,7 @@ public class LevelManager : MonoBehaviour
         // Disable levels
         for (int index = 0; index < duckQuantityList.Length; index++)
         {
-            Debug.Log("Button - Level " + (index + 1).ToString());
+            // Define which button is interactable or not
             if ((index + 1) <= unlockedLevels)
                 GameObject.Find("Button - Level " + (index + 1).ToString()).GetComponent<Button>().interactable = true;
             else
@@ -93,6 +97,7 @@ public class LevelManager : MonoBehaviour
         hitCounterText.SetText($"Hits: {hitCount} - Miss: {missCount}");
     }
 
+    // Set the custom duck spawn difficulty by level
     private void SetDifficulty(int level)
     {
         spawner.SpawnDuck(duckQuantityList[level], 0.75f, duckSpeedList[level]);
@@ -135,14 +140,15 @@ public class LevelManager : MonoBehaviour
         missCount += 1;
     }
 
+    // Every time the duck is hit or miss, verify if the game is over
     public void CheckGameOver()
     {
         int ducksCount = hitCount + missCount;
-
-        Debug.Log($"Level[{level}], Total Miss Hit Count[{ducksCount}], Level Duck Count[{duckQuantityList[level]}], Duck Hits[{hitCount}], Duck Miss[{missCount}]");
         
+        // When the hit miss count is higher or equal the duck level spawn quantity, is considered the level ended
         if (ducksCount >= duckQuantityList[level])
         {
+            // When the player hit the required ducks by level, succeeded
             if (hitCount >= duckRequiredList[level])
                 SaveGame();
 
@@ -151,28 +157,21 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    // Save the current unlocked level in the windows register
     private void SaveGame()
     {
-        Debug.Log($"A={PlayerPrefs.GetInt("UnlockedLevels")}");
         PlayerPrefs.DeleteAll();
-        PlayerPrefs.SetInt("UnlockedLevels", level > 15 ? level : (level + 2));
+        PlayerPrefs.SetInt("UnlockedLevels", level > 15 ? level : (level + 2)); // Don't allow the data greater than seventeen
         PlayerPrefs.Save();
-        Debug.Log($"B={PlayerPrefs.GetInt("UnlockedLevels")}");
     }
 
+    // Search in the register the data to unlock the levels
     private void LoadGame()
     {
-        Debug.Log($"C={PlayerPrefs.GetInt("UnlockedLevels")}");
-
+        // When has saved data on windows registers
         if (PlayerPrefs.HasKey("UnlockedLevels"))
-        {
             unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels");
-            Debug.Log($"D={PlayerPrefs.GetInt("UnlockedLevels")}");
-        }
         else
-        {
             unlockedLevels = 1;
-            Debug.Log($"E={PlayerPrefs.GetInt("UnlockedLevels")}");
-        }
     }
 }

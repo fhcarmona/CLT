@@ -1,17 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DuckMovement : MonoBehaviour
 {
+    // Unity variable classes
     public Vector3 destination { get; set; }
     private Vector3 origin;
 
+    // Duck variables
     public float flyingSpeed { get; set; }
     private float destinationBound = 10.0f;
     private float destinationHeight = 10.0f;
     private float originBound = 5.0f;
 
+    // External script variable
     private LevelManager levelManager;
 
     // Start is called before the first frame update
@@ -33,6 +34,7 @@ public class DuckMovement : MonoBehaviour
 
     }
 
+    // Do physics updates
     void FixedUpdate()
     {
         MoveDuck(gameObject, destination);
@@ -40,15 +42,21 @@ public class DuckMovement : MonoBehaviour
         DestroyDuck();
     }
 
+    // Movement the duck to origin to the target
     void MoveDuck(GameObject duck, Vector3 target)
     {
+        // Flip the sprite when the duck target position is at left side
         if (target.x < 0)
             duck.gameObject.GetComponent<SpriteRenderer>().flipX = true;
 
+        // Move the duck time a bit to the target position
         duck.transform.Translate(target * Time.fixedDeltaTime * flyingSpeed);
     }
+
+    // Check the duck destroy conditions
     void DestroyDuck()
     {
+        // Whenever the duck is out of bounds
         if (gameObject.transform.position.y > destination.y)
         {            
             levelManager.AddMissCount();

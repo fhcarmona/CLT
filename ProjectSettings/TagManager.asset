@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemies
   - Background
+  - Window
   layers:
   - Default
   - TransparentFX
@@ -46,15 +47,18 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Desktop
+  - name: Back
     uniqueID: 4202659185
     locked: 0
-  - name: Window
+  - name: Characters
     uniqueID: 2179968919
     locked: 0
-  - name: UI
+  - name: Front
     uniqueID: 3871170815
     locked: 0
-  - name: Trigger
+  - name: UI
     uniqueID: 3403257393
+    locked: 0
+  - name: Trigger
+    uniqueID: 4075946563
     locked: 0
