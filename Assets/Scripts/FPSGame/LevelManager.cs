@@ -160,7 +160,6 @@ public class LevelManager : MonoBehaviour
     // Save the current unlocked level in the windows register
     private void SaveGame()
     {
-        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("UnlockedLevels", level > 15 ? level : (level + 2)); // Don't allow the data greater than seventeen
         PlayerPrefs.Save();
     }

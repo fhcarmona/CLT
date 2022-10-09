@@ -1,27 +1,46 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class MenuSystem : MonoBehaviour
 {
+    public static string lastScene;
+
+    private Options optionClass;
+
+    public void Awake()
+    {
+        optionClass = gameObject.AddComponent<Options>();
+        optionClass.SetOptions();
+    }
+
+    // MainMenu
     public void NewGame()
     {
-        SceneManager.LoadScene(0, LoadSceneMode.Additive);
+        CustomLoadScene("Computer");
     }
 
     public void Options()
     {
-        //SceneManager.LoadScene(2);
-    }
-
-    public void Back()
-    {
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        CustomLoadScene("Options");
     }
 
     public void Exit()
     {
         Application.Quit();
+    }
+
+    // Options
+    public void Back()
+    {
+        CustomLoadScene(lastScene);
+    }    
+
+    private void CustomLoadScene(string name)
+    {
+        // Store the last scene
+        lastScene = SceneManager.GetActiveScene().name;
+
+        // Close every scene and open the below scene
+        SceneManager.LoadScene(name, LoadSceneMode.Single);
     }
 }
