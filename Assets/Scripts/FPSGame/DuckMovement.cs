@@ -8,17 +8,19 @@ public class DuckMovement : MonoBehaviour
 
     // Duck variables
     public float flyingSpeed { get; set; }
-    private float destinationBound = 10.0f;
-    private float destinationHeight = 10.0f;
+    private float destinationBound = 7.2f;
+    private float destinationHeight = 7.5f;
     private float originBound = 5.0f;
 
     // External script variable
     private LevelManager levelManager;
+    private AimSystem aimSystem;
 
     // Start is called before the first frame update
     void Awake()
     {
         levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+        aimSystem = GameObject.Find("Aim").GetComponent<AimSystem>();
 
         // Generate a new destination
         destination = new Vector3(Random.Range(-destinationBound, destinationBound), destinationHeight, gameObject.transform.position.z);
@@ -63,5 +65,13 @@ public class DuckMovement : MonoBehaviour
             Destroy(gameObject);
             levelManager.CheckGameOver();            
         }
+    }
+
+    // When any mouse button is pressed
+    void OnMouseDown()
+    {
+        Debug.Log("Duck Clicked!");
+
+        aimSystem.HitDuck(this);
     }
 }

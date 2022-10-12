@@ -154,6 +154,9 @@ public class LevelManager : MonoBehaviour
 
             aim.gameObject.SetActive(false);
             restartButton.SetActive(true);
+
+            // Mouse visible
+            Cursor.visible = true;
         }
     }
 

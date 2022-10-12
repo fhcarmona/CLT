@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class AimSystem : MonoBehaviour
 {
@@ -11,65 +12,44 @@ public class AimSystem : MonoBehaviour
 
     void Awake()
     {
-        // Cursor.visible = false;
+        Cursor.visible = false;
         fpsCam = GameObject.Find("FPS Main Camera").GetComponent<Camera>();
+        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
 
         // Convert the size of monitor into scren world points
         screenBounds = fpsCam.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
-
-        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
     }
 
     void FixedUpdate()
     {
-        // Convert the mouse position into ray
-        ray = fpsCam.ScreenPointToRay(Input.mousePosition);
-
-        // Simulate a ray line from mouse position to define where is hitting
-        if (Physics.Raycast(ray, out RaycastHit hitData, 100, layersToHit))
-        {            
-            MoveAim(hitData);
-        }
+        MoveAim();
     }
-    
-    // When any mouse button is pressed
-    void OnMouseDown()
+
+    // Move the aim
+    void MoveAim()
+    {                
+        Vector3 mousePos = fpsCam.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 0));
+
+        // Clamp into screen bounds
+        transform.position = new Vector3(
+            Mathf.Clamp(mousePos.x, -screenBounds.x, screenBounds.x), 
+            Mathf.Clamp(mousePos.y, -screenBounds.y, screenBounds.y), 
+            transform.position.z);
+    }
+
+    // Duck hit detection
+    public void HitDuck(DuckMovement duck)
     {
-        Ray aimRay = fpsCam.ScreenPointToRay(Input.mousePosition);
-        DuckMovement duck;
+        BoxCollider2D duckCollider = duck.GetComponent<BoxCollider2D>();
 
-        // Primary mouse button key
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        // Check if the aim position is in duck position
+        if (duck.tag == "Enemies" && duckCollider.bounds.Contains(transform.position))
         {
-            // Simulate a ray line from mouse position to define where is hitting
-            if (Physics.Raycast(aimRay, out RaycastHit hitData, 100, layersToHit))
-            {
-                // When the hitdata hit an enemy
-                if (hitData.transform.tag == "Enemies")
-                {
-                    duck = hitData.collider.GetComponent<DuckMovement>();
-
-                    // Hit the duck, add score, destroy and check if was the last duck in scene
-                    levelManager.AddHitCount();
-                    levelManager.AddScore(Vector3.Distance(transform.position, duck.destination) * duck.flyingSpeed * 10);
-                    Destroy(hitData.transform.gameObject);
-                    levelManager.CheckGameOver();                    
-                }
-            }
+            // Hit the duck, add score, destroy and check if was the last duck in scene
+            levelManager.AddHitCount();
+            levelManager.AddScore(Vector3.Distance(transform.position, duck.destination) * duck.flyingSpeed * 10);
+            Destroy(duck.gameObject);
+            levelManager.CheckGameOver();
         }
-    }
-
-    // Move the aim sprite when is on background or enemy sprite [change this solution in the future]
-    void MoveAim(RaycastHit hitData)
-    {        
-        // Only move when
-        if (hitData.transform.name == "Background" || hitData.transform.tag == "Enemies")
-        {
-            // Clamp into screen bounds
-            transform.position = new Vector3(
-                Mathf.Clamp(hitData.point.x, -screenBounds.x, screenBounds.x), 
-                Mathf.Clamp(hitData.point.y, -screenBounds.y, screenBounds.y), 
-                transform.position.z);
-        }   
     }
 }
