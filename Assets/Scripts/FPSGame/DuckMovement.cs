@@ -9,31 +9,19 @@ public class DuckMovement : MonoBehaviour
     // Duck variables
     public float flyingSpeed { get; set; }
     private float destinationBound = 7.2f;
-    private float destinationHeight = 7.5f;
-    private float originBound = 5.0f;
+    private float destinationHeight = 10;
+    //private float originBound = 8.45f; // Todo: Implement the bounds
 
     // External script variable
     private LevelManager levelManager;
-    private AimSystem aimSystem;
 
     // Start is called before the first frame update
     void Awake()
     {
-        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
-        aimSystem = GameObject.Find("Aim").GetComponent<AimSystem>();
+        levelManager = GameObject.Find("FPSLevelManager").GetComponent<LevelManager>();
 
         // Generate a new destination
         destination = new Vector3(Random.Range(-destinationBound, destinationBound), destinationHeight, gameObject.transform.position.z);
-
-        // Generate a new origin
-        if (destination.x < 0)            
-            origin = new Vector3(Random.Range(0, originBound), -5, 0);
-        else
-            origin = new Vector3(Random.Range(-originBound, 0), -5, 0);
-
-        // Origin
-        transform.position = origin;
-
     }
 
     // Do physics updates
@@ -60,18 +48,10 @@ public class DuckMovement : MonoBehaviour
     {
         // Whenever the duck is out of bounds
         if (gameObject.transform.position.y > destination.y)
-        {            
+        {
             levelManager.AddMissCount();
             Destroy(gameObject);
-            levelManager.CheckGameOver();            
+            levelManager.CheckGameOver();
         }
-    }
-
-    // When any mouse button is pressed
-    void OnMouseDown()
-    {
-        Debug.Log("Duck Clicked!");
-
-        aimSystem.HitDuck(this);
     }
 }

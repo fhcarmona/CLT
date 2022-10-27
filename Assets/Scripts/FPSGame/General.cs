@@ -9,7 +9,7 @@ public class General : MonoBehaviour
     // Every time an object attached with this script
     private void Awake()
     {
-        levelManager = GameObject.Find("Level Manager").GetComponent<LevelManager>();
+        levelManager = GameObject.Find("FPSLevelManager").GetComponent<LevelManager>();
     }
 
     // Button action for level select

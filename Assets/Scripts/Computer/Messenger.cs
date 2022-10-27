@@ -102,8 +102,6 @@ public class Messenger : MonoBehaviour, IDragHandler
 
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
-        Debug.Log(eventData.position);
-
         transform.position = eventData.position;
     }
 }

@@ -16,6 +16,13 @@ public class DesktopApplications : MonoBehaviour
     [SerializeField]
     private GameObject taskbarParent, appParent;
 
+    private GameObject cursor;
+
+    private void Awake()
+    {
+        cursor = GameObject.Find("Cursor");
+    }
+
     // Open the messenger app
     public void OpenMessageApp()
     {
@@ -34,6 +41,8 @@ public class DesktopApplications : MonoBehaviour
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 
     // Open the FPS minigame
@@ -54,6 +63,8 @@ public class DesktopApplications : MonoBehaviour
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 
     // Open the contability app
@@ -74,6 +85,8 @@ public class DesktopApplications : MonoBehaviour
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 
     // Open the care minigame
@@ -94,5 +107,7 @@ public class DesktopApplications : MonoBehaviour
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 }

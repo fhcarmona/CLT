@@ -19,11 +19,6 @@ public class TaskBar : MonoBehaviour
             taskbarWindows = new List<Window>();
 
         StartCoroutine(HourUpdate());
-
-        foreach (Window gObj in taskbarWindows)
-        {
-            Debug.Log($"Program[{gObj.program.name}]");
-        }
     }
 
     // Check opened taskbar window
@@ -37,5 +32,16 @@ public class TaskBar : MonoBehaviour
     {
         taskbarTime.text = DateTime.Now.ToShortTimeString();
         yield return new WaitForSeconds(Time.deltaTime);
+    }
+
+    public static int AppCountByName(string appName)
+    {
+        int count = 0;
+
+        foreach (Window window in taskbarWindows)
+            if (window.program.name == appName)
+                count++;
+
+        return count;
     }
 }

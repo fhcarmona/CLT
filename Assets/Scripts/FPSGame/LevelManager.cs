@@ -9,14 +9,14 @@ public class LevelManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI startText, scoreText, hitCounterText;
     private DuckSpawner spawner;
-    private GameObject buttonGroup, restartButton, aim;
+    private GameObject restartButton, aim, mainMenuScene, gameplayScene;
 
     // Game user interface 
     private float delayBegin, score;
     private int hitCount, missCount, level, unlockedLevels;
 
     // Level difficulty parameters
-    private int[] duckQuantityList = { 3, 4, 5, 6, 8, 10, 12, 14, 17, 20, 23, 26, 30, 34, 38, 42};
+    private int[] duckQuantityList = { 3, 4, 5, 6, 8, 10, 12, 14, 17, 20, 23, 26, 30, 34, 38, 42 };
     private int[] duckRequiredList = { 1, 1, 2, 2, 4, 4, 6, 6, 8, 8, 12, 12, 16, 16, 24, 24 };
     private float[] duckSpeedList = { 0.1f, 0.11f, 0.12f, 0.13f, 0.15f, 0.17f, 0.19f, 0.21f, 0.24f, 0.27f, 0.30f, 0.33f, 0.37f, 0.41f, 0.45f, 0.49f };
 
@@ -26,16 +26,13 @@ public class LevelManager : MonoBehaviour
         // Get the spawner component to begin the level
         spawner = GetComponent<DuckSpawner>();
 
-        buttonGroup = GameObject.Find("Group - LevelButton");
-        restartButton = GameObject.Find("Button - Restart");
+        restartButton = GameObject.Find("Restart");
         aim = GameObject.Find("Aim");
+        mainMenuScene = GameObject.Find("FPSMainMenu");
+        gameplayScene = GameObject.Find("FPSGameplayUI");
 
         // Default behaviours
-        restartButton.SetActive(false);
-        startText.gameObject.SetActive(false);
-        scoreText.gameObject.SetActive(false);
-        hitCounterText.gameObject.SetActive(false);
-        aim.gameObject.SetActive(false);
+        gameplayScene.SetActive(false);
 
         // Define which level is playable
         BlockLevels();
@@ -60,10 +57,9 @@ public class LevelManager : MonoBehaviour
         }
 
         // Define which UI is enable
+        gameplayScene.SetActive(true);
         startText.gameObject.SetActive(false);
-        scoreText.gameObject.SetActive(true);
-        hitCounterText.gameObject.SetActive(true);
-        aim.gameObject.SetActive(true);
+        restartButton.gameObject.SetActive(false);
 
         SetDifficulty(level);
     }
@@ -107,10 +103,11 @@ public class LevelManager : MonoBehaviour
     public void StartGame(int difficulty)
     {
         // Reset variables
-        restartButton.SetActive(false);
-        buttonGroup.SetActive(false);
-        startText.gameObject.SetActive(true);
+        mainMenuScene.SetActive(false);
         aim.gameObject.SetActive(true);
+        gameplayScene.SetActive(true);
+        restartButton.SetActive(false);
+        startText.gameObject.SetActive(true);
 
         delayBegin = 3;
         score = 0;
@@ -144,7 +141,7 @@ public class LevelManager : MonoBehaviour
     public void CheckGameOver()
     {
         int ducksCount = hitCount + missCount;
-        
+
         // When the hit miss count is higher or equal the duck level spawn quantity, is considered the level ended
         if (ducksCount >= duckQuantityList[level])
         {
@@ -154,15 +151,13 @@ public class LevelManager : MonoBehaviour
 
             aim.gameObject.SetActive(false);
             restartButton.SetActive(true);
-
-            // Mouse visible
-            Cursor.visible = true;
         }
     }
 
     // Save the current unlocked level in the windows register
     private void SaveGame()
     {
+        PlayerPrefs.DeleteAll();
         PlayerPrefs.SetInt("UnlockedLevels", level > 15 ? level : (level + 2)); // Don't allow the data greater than seventeen
         PlayerPrefs.Save();
     }
@@ -175,5 +170,15 @@ public class LevelManager : MonoBehaviour
             unlockedLevels = PlayerPrefs.GetInt("UnlockedLevels");
         else
             unlockedLevels = 1;
+    }
+
+    public void RestartGame()
+    {
+        // Deactivate gamescene
+        gameplayScene.SetActive(false);
+        mainMenuScene.SetActive(true);
+
+        // Reload enable level list
+        BlockLevels();
     }
 }
