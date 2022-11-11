@@ -6,13 +6,20 @@ using UnityEngine.SceneManagement;
 public class StartManager : MonoBehaviour
 {
     [SerializeField]
-    private GameObject startMenu;
+    private GameObject startMenu, soundMenu;
 
+    // Taskbar functions
     public void ToggleStartMenu()
     {
         startMenu.SetActive(!startMenu.activeSelf);        
     }
 
+    public void ToggleSoundMenu()
+    {
+        soundMenu.SetActive(!soundMenu.activeSelf);
+    }
+
+    // Menubar system
     public void ShutDown()
     {
         Application.Quit();

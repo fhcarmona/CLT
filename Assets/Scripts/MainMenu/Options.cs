@@ -110,6 +110,7 @@ public class Options : MonoBehaviour
         SetOptions();
     }
 
+    // Slider function inspector
     public void SFXSlider()
     {
         TextMeshProUGUI label = sfxSlider.GetComponentInChildren<TextMeshProUGUI>();
