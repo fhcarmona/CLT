@@ -21,12 +21,6 @@ public class TaskBar : MonoBehaviour
         StartCoroutine(HourUpdate());
     }
 
-    // Check opened taskbar window
-    IEnumerator TaskbarWindows()
-    {
-        yield return new WaitForSeconds(Time.deltaTime);
-    }
-
     // Update the taskbar time every second
     IEnumerator HourUpdate()
     {
@@ -34,14 +28,12 @@ public class TaskBar : MonoBehaviour
         yield return new WaitForSeconds(Time.deltaTime);
     }
 
-    public static int AppCountByName(string appName)
+    public static Window GetAppByName(string appName)
     {
-        int count = 0;
-
         foreach (Window window in taskbarWindows)
             if (window.program.name == appName)
-                count++;
+                return window;
 
-        return count;
+        return null;
     }
 }

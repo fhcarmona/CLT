@@ -8,8 +8,10 @@ public class LevelManager : MonoBehaviour
     // Unity classes variables
     [SerializeField]
     private TextMeshProUGUI startText, scoreText, hitCounterText;
+    [SerializeField]
+    private GameObject tutorialUI;
     private DuckSpawner spawner;
-    private GameObject restartButton, aim, mainMenuScene, gameplayScene;
+    private GameObject restartButton, aim, mainMenuScene, gameplayScene;    
 
     // Game user interface 
     private float delayBegin, score;
@@ -36,6 +38,9 @@ public class LevelManager : MonoBehaviour
 
         // Define which level is playable
         BlockLevels();
+
+        // Tutorial timer countdown
+        StartCoroutine(TutorialTimer());
     }
 
     private void Update()
@@ -62,6 +67,13 @@ public class LevelManager : MonoBehaviour
         restartButton.gameObject.SetActive(false);
 
         SetDifficulty(level);
+    }
+
+    IEnumerator TutorialTimer()
+    {
+        yield return new WaitForSeconds(5);
+
+        tutorialUI.SetActive(false);
     }
 
     // Read the user preferences [windows register] and define which level is enabled

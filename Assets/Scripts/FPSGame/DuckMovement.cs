@@ -10,7 +10,6 @@ public class DuckMovement : MonoBehaviour
     public float flyingSpeed { get; set; }
     private float destinationBound = 7.2f;
     private float destinationHeight = 10;
-    //private float originBound = 8.45f; // Todo: Implement the bounds
 
     // External script variable
     private LevelManager levelManager;
@@ -47,7 +46,7 @@ public class DuckMovement : MonoBehaviour
     void DestroyDuck()
     {
         // Whenever the duck is out of bounds
-        if (gameObject.transform.position.y > destination.y)
+        if (gameObject.transform.position.y > 164)
         {
             levelManager.AddMissCount();
             Destroy(gameObject);

@@ -14,7 +14,7 @@ public class WindowManager : MonoBehaviour
     {
         // Search by taskbar list of open apps
         for (int index = 0; index < TaskBar.taskbarWindows.Count; index++)
-            if (TaskBar.taskbarWindows[index].program = gameObject)
+            if (TaskBar.taskbarWindows[index].program.name.Equals(gameObject.name))
             {
                 // Destroy app
                 Destroy(TaskBar.taskbarWindows[index].taskbarProgram);

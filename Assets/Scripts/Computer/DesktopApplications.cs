@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class DesktopApplications : MonoBehaviour
 {
@@ -28,21 +29,37 @@ public class DesktopApplications : MonoBehaviour
     {
         int index = 0;
 
+        Window appInstance = TaskBar.GetAppByName(apps[index].name);
+
         // One per time
-        if (GameObject.Find(apps[index].name) == null)
+        if (appInstance == null)
         {
+            Debug.Log($"New[{apps[index].name}]");
+
             GameObject prefabApp = Instantiate(apps[index], appParent.transform);
             GameObject taskbarPrefabApp = Instantiate(taskbarApps[index], taskbarParent.transform);
 
             // Reset clone name to prefab name
             prefabApp.name = apps[index].name;
-            taskbarPrefabApp.name = taskbarApps[index].name;
+            taskbarPrefabApp.name = apps[index].name + "Taskbar";
 
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
-        }
 
-        cursor.transform.SetAsLastSibling();
+            // Define the taskbar window title
+            taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
+
+            cursor.transform.SetAsLastSibling();
+        }
+        else
+        {
+            Debug.Log($"Activate[{apps[index].name}]");
+
+            appInstance.program.SetActive(true);
+            appInstance.taskbarProgram.SetActive(true);
+
+            cursor.transform.SetAsLastSibling();
+        }
     }
 
     // Open the FPS minigame
@@ -58,13 +75,16 @@ public class DesktopApplications : MonoBehaviour
 
             // Reset clone name to prefab name
             prefabApp.name = apps[index].name;
-            taskbarPrefabApp.name = taskbarApps[index].name;
+            taskbarPrefabApp.name = apps[index].name + "Taskbar";
 
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
-        }
 
-        cursor.transform.SetAsLastSibling();
+            // Define the taskbar window title
+            taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
+
+            cursor.transform.SetAsLastSibling();
+        }
     }
 
     // Open the contability app
@@ -80,13 +100,16 @@ public class DesktopApplications : MonoBehaviour
 
             // Reset clone name to prefab name
             prefabApp.name = apps[index].name;
-            taskbarPrefabApp.name = taskbarApps[index].name;
+            taskbarPrefabApp.name = apps[index].name + "Taskbar";
 
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
-        }
 
-        cursor.transform.SetAsLastSibling();
+            // Define the taskbar window title
+            taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
+
+            cursor.transform.SetAsLastSibling();
+        }
     }
 
     // Open the care minigame
@@ -102,12 +125,15 @@ public class DesktopApplications : MonoBehaviour
 
             // Reset clone name to prefab name
             prefabApp.name = apps[index].name;
-            taskbarPrefabApp.name = taskbarApps[index].name;
+            taskbarPrefabApp.name = apps[index].name + "Taskbar";
 
             // Add the vinculed window-taskbar to the list
             TaskBar.taskbarWindows.Add(new Window(prefabApp, taskbarPrefabApp));
-        }
 
-        cursor.transform.SetAsLastSibling();
+            // Define the taskbar window title
+            taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
+
+            cursor.transform.SetAsLastSibling();
+        }        
     }
 }

@@ -4,16 +4,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro;
 
-public class Messenger : MonoBehaviour, IDragHandler
+public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
     private Queue dialogue;
     private float dialogueSpeed;
+    private GameObject cursor;
 
     [SerializeField]
     private GameObject messageLayout, contentPanel;
 
     private void Start()
     {
+        cursor = GameObject.Find("Cursor");
+
         StartDialogue();
     }
 
@@ -23,16 +26,11 @@ public class Messenger : MonoBehaviour, IDragHandler
         dialogue = new Queue();
 
         // Dialogue
-        dialogue.Enqueue(new Person("Chefe", "Precisa cumprir o horário", Color.red, false));
-        dialogue.Enqueue(new Person("Chefe", "Por isso, ficará pós-expediente", Color.red, false));
-        dialogue.Enqueue(new Person("Jogador", "Eu tenho compromisso...", Color.cyan, true));
-        dialogue.Enqueue(new Person("Chefe", "Se quiser ainda trabalhar", Color.red, false));
-        dialogue.Enqueue(new Person("Chefe", "Desmarque os compromissos", Color.red, false));
-        dialogue.Enqueue(new Person("Jogador", "Está certo", Color.cyan, true));
-        dialogue.Enqueue(new Person("Chefe", "Ficarei te observando", Color.red, false));
-        dialogue.Enqueue(new Person("Chefe", "Ao trabalho!", Color.red, false));
-
-        Debug.Log("Dialogue Initialize!");
+        dialogue.Enqueue(new Person("Betty", "Oi, eu sou Betty, a sua inteligencia artificial.", Color.red, false));
+        dialogue.Enqueue(new Person("Betty", "Estou aqui para te auxiliar.", Color.red, false));
+        dialogue.Enqueue(new Person("Betty", "Você foi escolhido para o novo programa da empresa.", Color.red, false));
+        dialogue.Enqueue(new Person("Betty", "Na área de trabalho você terá tudo o que é necessário, sinta-se livre para navegar.", Color.red, false));
+        dialogue.Enqueue(new Person("Betty", "E não esqueça. 'Livre da mente. Trabalhe para a gente!'", Color.red, false));
     }
 
     // Show the next dialogue sentence
@@ -77,14 +75,14 @@ public class Messenger : MonoBehaviour, IDragHandler
     {
         // Search by taskbar list of open apps
         for (int index = 0; index < TaskBar.taskbarWindows.Count; index++)
-            if (TaskBar.taskbarWindows[index].program = gameObject)
+            if (TaskBar.taskbarWindows[index].program.name.Equals(gameObject.name))
             {
                 // Destroy app
-                Destroy(TaskBar.taskbarWindows[index].taskbarProgram);
-                Destroy(TaskBar.taskbarWindows[index].program);
+                TaskBar.taskbarWindows[index].taskbarProgram.SetActive(false);
+                TaskBar.taskbarWindows[index].program.SetActive(false);
 
                 // Remove app from list
-                TaskBar.taskbarWindows.Remove(TaskBar.taskbarWindows[index]);
+                //TaskBar.taskbarWindows.Remove(TaskBar.taskbarWindows[index]);
             }
     }
 
@@ -103,5 +101,11 @@ public class Messenger : MonoBehaviour, IDragHandler
     void IDragHandler.OnDrag(PointerEventData eventData)
     {
         transform.position = eventData.position;
+    }
+
+    void IPointerDownHandler.OnPointerDown(PointerEventData eventData)
+    {
+        transform.SetAsLastSibling();
+        cursor.transform.SetAsLastSibling();
     }
 }
