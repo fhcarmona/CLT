@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour
     private TextMeshProUGUI startText, scoreText, hitCounterText;
     [SerializeField]
     private GameObject tutorialUI;
+
+    private AudioSource backgroundMusic;
     private DuckSpawner spawner;
     private GameObject restartButton, aim, mainMenuScene, gameplayScene;    
 
@@ -27,6 +29,8 @@ public class LevelManager : MonoBehaviour
     {
         // Get the spawner component to begin the level
         spawner = GetComponent<DuckSpawner>();
+
+        backgroundMusic = GetComponent<AudioSource>();
 
         restartButton = GameObject.Find("Restart");
         aim = GameObject.Find("Aim");
@@ -72,6 +76,10 @@ public class LevelManager : MonoBehaviour
     IEnumerator TutorialTimer()
     {
         yield return new WaitForSeconds(5);
+        
+        // Background music
+        backgroundMusic.volume = Helper.GetPrefByKeyName("MusicVolume") / 100;
+        backgroundMusic.Play();
 
         tutorialUI.SetActive(false);
     }
@@ -114,6 +122,9 @@ public class LevelManager : MonoBehaviour
     // Definitions to begin a new game
     public void StartGame(int difficulty)
     {
+        // 
+        backgroundMusic.Stop();
+
         // Reset variables
         mainMenuScene.SetActive(false);
         aim.gameObject.SetActive(true);
@@ -189,8 +200,12 @@ public class LevelManager : MonoBehaviour
         // Deactivate gamescene
         gameplayScene.SetActive(false);
         mainMenuScene.SetActive(true);
-
+        
         // Reload enable level list
         BlockLevels();
+
+        // Play background music
+        backgroundMusic.volume = Helper.GetPrefByKeyName("MusicVolume") / 100;
+        backgroundMusic.Play();
     }
 }

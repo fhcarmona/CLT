@@ -9,6 +9,8 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
     private Queue dialogue;
     private float dialogueSpeed;
     private GameObject cursor;
+    private AudioSource notificationSound;
+
 
     [SerializeField]
     private GameObject messageLayout, contentPanel;
@@ -16,6 +18,7 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
     private void Start()
     {
         cursor = GameObject.Find("Cursor");
+        notificationSound = GetComponent<AudioSource>();
 
         StartDialogue();
     }
@@ -61,6 +64,10 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
             senderName.alignment = TextAlignmentOptions.MidlineRight;
             senderMessage.alignment = TextAlignmentOptions.MidlineRight;
         }
+
+        // Set the volume
+        notificationSound.volume = Helper.GetPrefByKeyName("SFXVolume") / 100;
+        notificationSound.Play();
 
         // Remove the dialog
         dialogue.Dequeue();

@@ -74,10 +74,10 @@ public class Options : MonoBehaviour
     public void MusicSlider()
     {
         TextMeshProUGUI label = musicSlider.GetComponentInChildren<TextMeshProUGUI>();
-        AudioSource music = musicSlider.GetComponent<AudioSource>();
+        AudioSource music = GetComponent<AudioSource>();
 
-        music.Play();
         music.volume = musicSlider.value / 100;
+
         label.text = musicSlider.value.ToString();    
     }
 }

@@ -1,16 +1,20 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class MenuSystem : MonoBehaviour
 {
     public static string lastScene;
 
-    private Options optionClass;
-
     public void Awake()
     {
-        optionClass = gameObject.AddComponent<Options>();
-        optionClass.SetOptions();
+        // Set resolution
+        Screen.SetResolution(1024, 768, false);
+
+        // Set the volume
+        GetComponent<AudioSource>().volume = Helper.GetPrefByKeyName("MusicVolume") / 100;
+
+        Debug.Log($"Musica[{Helper.GetPrefByKeyName("MusicVolume") / 100}], Efeitos[{Helper.GetPrefByKeyName("SFXVolume") / 100}]");
     }
 
     // MainMenu

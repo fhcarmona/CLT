@@ -48,8 +48,6 @@ public class DesktopApplications : MonoBehaviour
 
             // Define the taskbar window title
             taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
-
-            cursor.transform.SetAsLastSibling();
         }
         else
         {
@@ -57,9 +55,9 @@ public class DesktopApplications : MonoBehaviour
 
             appInstance.program.SetActive(true);
             appInstance.taskbarProgram.SetActive(true);
-
-            cursor.transform.SetAsLastSibling();
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 
     // Open the FPS minigame
@@ -82,9 +80,9 @@ public class DesktopApplications : MonoBehaviour
 
             // Define the taskbar window title
             taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
-
-            cursor.transform.SetAsLastSibling();
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 
     // Open the contability app
@@ -107,9 +105,9 @@ public class DesktopApplications : MonoBehaviour
 
             // Define the taskbar window title
             taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
-
-            cursor.transform.SetAsLastSibling();
         }
+
+        cursor.transform.SetAsLastSibling();
     }
 
     // Open the care minigame
@@ -132,8 +130,8 @@ public class DesktopApplications : MonoBehaviour
 
             // Define the taskbar window title
             taskbarPrefabApp.GetComponentInChildren<TextMeshProUGUI>().text = prefabApp.GetComponentInChildren<TextMeshProUGUI>().text;
+        }
 
-            cursor.transform.SetAsLastSibling();
-        }        
+        cursor.transform.SetAsLastSibling();
     }
 }

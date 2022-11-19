@@ -8,6 +8,12 @@ public class StartManager : MonoBehaviour
     [SerializeField]
     private GameObject startMenu, soundMenu;
 
+    public void Awake()
+    {
+        // Set the volume
+        GetComponent<AudioSource>().volume = Helper.GetPrefByKeyName("MusicVolume") / 100;
+    }
+
     // Taskbar functions
     public void ToggleStartMenu()
     {
@@ -27,6 +33,7 @@ public class StartManager : MonoBehaviour
 
     public void Logoff()
     {
+        Cursor.visible = true;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
