@@ -94,7 +94,11 @@ public class LevelManager : MonoBehaviour
         {
             // Define which button is interactable or not
             if ((index + 1) <= unlockedLevels)
+            {
                 GameObject.Find("Button - Level " + (index + 1).ToString()).GetComponent<Button>().interactable = true;
+
+                Messenger.RebeccaDialogue(index + 1);
+            }
             else
                 GameObject.Find("Button - Level " + (index + 1).ToString()).GetComponent<Button>().interactable = false;
 
