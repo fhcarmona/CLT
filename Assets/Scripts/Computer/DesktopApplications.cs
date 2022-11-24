@@ -19,9 +19,11 @@ public class DesktopApplications : MonoBehaviour
 
     private GameObject cursor;
 
-    private void Awake()
+    private void Start()
     {
         cursor = GameObject.Find("Cursor");
+
+        OpenMessageApp();
     }
 
     // Open the messenger app

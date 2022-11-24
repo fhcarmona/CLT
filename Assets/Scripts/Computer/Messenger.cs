@@ -7,16 +7,18 @@ using TMPro;
 
 public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
-    public static Queue[] dialogue = new Queue[3];
+    public static Queue<Person>[] dialogueList = new Queue<Person>[3];
     private float dialogueSpeed;
     private AudioSource notificationSound;
     private GameObject cursor;
     private static GameObject continueButton;
 
     [SerializeField]
-    private GameObject messageLayout, bettyChat, rebeccaChat, ludvickChat, bettyContent, rebeccaContent, ludvickContent;
+    private GameObject messageLayout, bettyChat, rebeccaChat, ludvickChat;
     [SerializeField]
     private Image senderImage;
+
+    private static GameObject bettyContent, rebeccaContent, ludvickContent;
 
     public enum Contact
     {
@@ -27,14 +29,17 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
 
     private void Start()
     {
+        bettyContent = GameObject.Find("BettyContent");
+        rebeccaContent = GameObject.Find("RebeccaContent");
+        ludvickContent = GameObject.Find("LudvickContent");
         continueButton = GameObject.Find("Continue");
 
         cursor = GameObject.Find("Cursor");
         notificationSound = GetComponent<AudioSource>();
 
-        dialogue[(int)Contact.Betty] = new Queue();
-        dialogue[(int)Contact.Rebecca] = new Queue();
-        dialogue[(int)Contact.Ludvick] = new Queue();
+        dialogueList[(int)Contact.Betty] = new Queue<Person>();
+        dialogueList[(int)Contact.Rebecca] = new Queue<Person>();
+        dialogueList[(int)Contact.Ludvick] = new Queue<Person>();
 
         InitialDialogue();
     }
@@ -43,11 +48,11 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
     public void InitialDialogue()
     {
         // Dialogue
-        dialogue[(int) Contact.Betty].Enqueue(new Person("Betty", "Oi, eu sou Betty, a sua inteligencia artificial.", Color.red, false));
-        dialogue[(int) Contact.Betty].Enqueue(new Person("Betty", "Estou aqui para te auxiliar.", Color.red, false));
-        dialogue[(int) Contact.Betty].Enqueue(new Person("Betty", "Você foi escolhido para o novo programa da empresa.", Color.red, false));
-        dialogue[(int) Contact.Betty].Enqueue(new Person("Betty", "Na área de trabalho você terá tudo o que é necessário, sinta-se livre para navegar.", Color.red, false));
-        dialogue[(int) Contact.Betty].Enqueue(new Person("Betty", "E não esqueça. 'Livre da mente. Trabalhe para a gente!'", Color.red, false));
+        dialogueList[(int) Contact.Betty].Enqueue(new Person("Betty", "Oi, eu sou Betty, a sua inteligencia artificial.", Color.red, false));
+        dialogueList[(int) Contact.Betty].Enqueue(new Person("Betty", "Estou aqui para te auxiliar.", Color.red, false));
+        dialogueList[(int) Contact.Betty].Enqueue(new Person("Betty", "Você foi escolhido para o novo programa da empresa.", Color.red, false));
+        dialogueList[(int) Contact.Betty].Enqueue(new Person("Betty", "Na área de trabalho você terá tudo o que é necessário, sinta-se livre para navegar.", Color.red, false));
+        dialogueList[(int) Contact.Betty].Enqueue(new Person("Betty", "E não esqueça. 'Livre da mente. Trabalhe para a gente!'", Color.red, false));
 
         // Show only one chat per time
         ChangeChat("BettyChat");
@@ -56,18 +61,108 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
         NextSentence();
     }
 
-    public static void AddDialogue(Queue newDialogue, Contact person)
+    public static void AddDialogue(Queue<Person> newDialogue, Contact person)
     {
-        dialogue[(int) person] = newDialogue;
+        dialogueList[(int) person] = newDialogue;
 
         continueButton.GetComponent<Button>().interactable = false;
     }
 
     public static void AddDialogue(Contact person, string text, Color color, bool isRight)
     {
-        dialogue[(int) person].Enqueue(new Person(person.ToString(), text, color, isRight));
+        if (!DialogueExist(person, text))
+        {
+            dialogueList[(int)person].Enqueue(new Person(person.ToString(), text, color, isRight));
 
-        continueButton.GetComponent<Button>().interactable = true;
+            continueButton.GetComponent<Button>().interactable = true;
+        }
+    }
+
+    private static bool DialogueExist(Contact person, string checkDialogue)
+    {
+        TextMeshProUGUI[] dialogueTextList;
+        int contactIndex = (int)person;
+
+        if (Contact.Betty == person)
+        {
+            dialogueTextList = bettyContent.GetComponentsInChildren<TextMeshProUGUI>();
+
+            // Check if exist dialog in queue
+            foreach (Person bettyDialogue in dialogueList[contactIndex])
+            {
+                if (bettyDialogue.sentence.Equals(checkDialogue))
+                {
+                    Debug.Log($"Dialogo duplicado bloqueado! RebeccaDialogue[{bettyDialogue.sentence}], Dialogue[{checkDialogue}]");
+
+                    return true;
+                }
+            }
+
+            // Check if exist the dialog in content
+            foreach (TextMeshProUGUI bettyDialogue in dialogueTextList)
+            {
+                if (bettyDialogue.text.Equals(checkDialogue))
+                {
+                    Debug.Log($"Dialogo duplicado bloqueado! BettyDialogue[{bettyDialogue.text}], Dialogue[{checkDialogue}]");
+
+                    return true;
+                }
+            }
+        }
+        else if (Contact.Rebecca == person)
+        {
+            dialogueTextList = rebeccaContent.GetComponentsInChildren<TextMeshProUGUI>();
+            
+            // Check if exist dialog in queue
+            foreach (Person rebeccaDialogue in dialogueList[contactIndex])
+            {
+                if (rebeccaDialogue.sentence.Equals(checkDialogue))
+                {
+                    Debug.Log($"Dialogo duplicado bloqueado! RebeccaDialogue[{rebeccaDialogue.sentence}], Dialogue[{checkDialogue}]");
+
+                    return true;
+                }
+            }
+
+            // Check if exist the dialog in content
+            foreach (TextMeshProUGUI rebeccaDialogue in dialogueTextList)
+            {
+                if (rebeccaDialogue.text.Equals(checkDialogue))
+                {
+                    Debug.Log($"Dialogo duplicado bloqueado! RebeccaDialogue[{rebeccaDialogue.text}], Dialogue[{checkDialogue}]");
+
+                    return true;
+                }
+            }
+        }
+        else if (Contact.Ludvick == person)
+        {
+            dialogueTextList = ludvickContent.GetComponentsInChildren<TextMeshProUGUI>();
+
+            // Check if exist dialog in queue
+            foreach (Person ludvickDialogue in dialogueList[contactIndex])
+            {
+                if (ludvickDialogue.sentence.Equals(checkDialogue))
+                {
+                    Debug.Log($"Dialogo duplicado bloqueado! RebeccaDialogue[{ludvickDialogue.sentence}], Dialogue[{checkDialogue}]");
+
+                    return true;
+                }
+            }
+
+            // Check if exist the dialog in content
+            foreach (TextMeshProUGUI ludvickDialogue in dialogueTextList)
+            {
+                if (ludvickDialogue.text.Equals(checkDialogue))
+                {
+                    Debug.Log($"Dialogo duplicado bloqueado! LudvickDialogue[{ludvickDialogue.text}], Dialogue[{checkDialogue}]");
+
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     // Show the next dialogue sentence
@@ -83,12 +178,14 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
             dialogueIndex = (int)Contact.Ludvick;
 
         // Get the FIFO dialogue line
-        Person person = (Person) dialogue[dialogueIndex].Peek();
+        Person person = (Person) dialogueList[dialogueIndex].Peek();
 
         // Clone the message prefab
-        GameObject dialogueObj = Instantiate(messageLayout, bettyContent.transform); // Default
-        
-        if (rebeccaChat.activeSelf)
+        GameObject dialogueObj = null;
+
+        if (bettyChat.activeSelf)
+            dialogueObj = Instantiate(messageLayout, bettyContent.transform);
+        else if (rebeccaChat.activeSelf)
             dialogueObj = Instantiate(messageLayout, rebeccaContent.transform);
         else if (ludvickChat.activeSelf)
             dialogueObj = Instantiate(messageLayout, ludvickContent.transform);
@@ -114,10 +211,10 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
         notificationSound.Play();
 
         // Remove the dialog
-        dialogue[dialogueIndex].Dequeue();
+        dialogueList[dialogueIndex].Dequeue();
 
         // Disable button if there's no dialogue remaining
-        if (dialogue[dialogueIndex].Count == 0)
+        if (dialogueList[dialogueIndex].Count == 0)
             continueButton.GetComponent<Button>().interactable = false;
     }
 
@@ -178,14 +275,14 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
                 senderImage.sprite = Resources.Load<Sprite>("Characters/bot-profile");
 
                 // Disable button if there's no dialogue remaining
-                continueButton.GetComponent<Button>().interactable = dialogue[(int)Contact.Betty].Count != 0;
+                continueButton.GetComponent<Button>().interactable = dialogueList[(int)Contact.Betty].Count != 0;
                 break;
             case "RebeccaChat":
                 rebeccaChat.SetActive(true);
                 senderImage.sprite = Resources.Load<Sprite>("Characters/collegue");
 
                 // Disable button if there's no dialogue remaining
-                continueButton.GetComponent<Button>().interactable = dialogue[(int)Contact.Rebecca].Count != 0;
+                continueButton.GetComponent<Button>().interactable = dialogueList[(int)Contact.Rebecca].Count != 0;
 
                 break;
             case "LudvickChat":
@@ -193,7 +290,7 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
                 senderImage.sprite = Resources.Load<Sprite>("Characters/boss");
 
                 // Disable button if there's no dialogue remaining
-                continueButton.GetComponent<Button>().interactable = dialogue[(int)Contact.Ludvick].Count != 0;
+                continueButton.GetComponent<Button>().interactable = dialogueList[(int)Contact.Ludvick].Count != 0;
                 break;
         }
     }
@@ -223,7 +320,7 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
         switch (index)
         {
             // After duckhunt level 01 is completed
-            case 0:
+            case 1:
                 AddDialogue(person, "Vi que completou a primeira fase", color, false);
                 AddDialogue(person, "Continue assim... Eles não devem ditar suas escolhas", color, false);
                 AddDialogue(person, "Por sorte a comunicação não foi bloqueada", color, false);
@@ -231,13 +328,13 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
                 AddDialogue(person, "Á énqsétá ê úná gáçiáeá", color, false);
                 break;
             // After duckhunt level 05 is completed
-            case 1:
+            case 5:
                 AddDialogue(person, "Eles xhpxbô ébvvbv ômplb comunicação.", color, false);
                 AddDialogue(person, "Você está indo bem, continue ôbxbpgq xhôuq", color, false);
                 AddDialogue(person, "Vamos jbàhv êqô úyh hwwh uvqkvbôb jbõlh", color, false);
                 break;
             // After duckhunt level 15 is completed
-            case 2:
+            case 15:
                 AddDialogue(person, "Eles estão distraidos agora", color, false);
                 AddDialogue(person, "Esse projeto... Essa õxãbõci", color, false);
                 AddDialogue(person, "Eu acredito que éznp úí çõysi óõcnzyqtióz", color, false);
@@ -251,7 +348,7 @@ public class Messenger : MonoBehaviour, IDragHandler, IPointerDownHandler
     {
         int count = 0;
 
-        foreach (Queue messageList in dialogue)
+        foreach (Queue<Person> messageList in dialogueList)
             count += messageList.Count;
 
         return count;

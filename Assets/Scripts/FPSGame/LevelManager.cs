@@ -92,15 +92,17 @@ public class LevelManager : MonoBehaviour
         // Disable levels
         for (int index = 0; index < duckQuantityList.Length; index++)
         {
+            Button levelButton = GameObject.Find("Button - Level " + (index + 1).ToString()).GetComponent<Button>();
+
             // Define which button is interactable or not
             if ((index + 1) <= unlockedLevels)
             {
-                GameObject.Find("Button - Level " + (index + 1).ToString()).GetComponent<Button>().interactable = true;
+                levelButton.interactable = true;
 
-                Messenger.RebeccaDialogue(index + 1);
+                Messenger.RebeccaDialogue(index);
             }
             else
-                GameObject.Find("Button - Level " + (index + 1).ToString()).GetComponent<Button>().interactable = false;
+                levelButton.interactable = false;
 
         }
     }
@@ -184,7 +186,7 @@ public class LevelManager : MonoBehaviour
     // Save the current unlocked level in the windows register
     private void SaveGame()
     {
-        PlayerPrefs.DeleteAll();
+        PlayerPrefs.DeleteKey("UnlockedLevels");
         PlayerPrefs.SetInt("UnlockedLevels", level > 15 ? level : (level + 2)); // Don't allow the data greater than seventeen
         PlayerPrefs.Save();
     }

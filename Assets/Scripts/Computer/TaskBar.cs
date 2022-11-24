@@ -11,13 +11,16 @@ public class TaskBar : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI taskbarTime, taskbarNotification;
 
-    private void Start()
+    private void Awake()
     {
         if (taskbarWindows == null)
             taskbarWindows = new List<Window>();
 
         StartCoroutine(HourUpdate());
         StartCoroutine(NotificationUpdate());
+
+        // Clear save
+        PlayerPrefs.DeleteKey("UnlockedLevels");
     }
 
     // Update the taskbar time every second

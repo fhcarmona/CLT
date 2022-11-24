@@ -520,7 +520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &3060822850196772445
 RectTransform:
   m_ObjectHideFlags: 0
@@ -802,7 +802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &6167981197792638252
 RectTransform:
   m_ObjectHideFlags: 0
@@ -906,7 +906,7 @@ GameObject:
   - component: {fileID: 6343755439726818213}
   - component: {fileID: 8637805548357724551}
   m_Layer: 5
-  m_Name: Content
+  m_Name: LudvickContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1647,7 +1647,7 @@ GameObject:
   - component: {fileID: 1674185035209852456}
   - component: {fileID: 4960281323659229223}
   m_Layer: 5
-  m_Name: Content
+  m_Name: BettyContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1859,7 +1859,7 @@ GameObject:
   - component: {fileID: 9120233937586498627}
   - component: {fileID: 7552608960691215595}
   m_Layer: 5
-  m_Name: Content
+  m_Name: RebeccaContent
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1980,7 +1980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &8408442921078824081
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2924,13 +2924,7 @@ MonoBehaviour:
   bettyChat: {fileID: 2636086222288807184}
   rebeccaChat: {fileID: 1964642362254132714}
   ludvickChat: {fileID: 7009485696398848553}
-  bettyContent: {fileID: 5557140000013446280}
-  rebeccaContent: {fileID: 6441681312558866432}
-  ludvickContent: {fileID: 2761355013441292824}
   senderImage: {fileID: 7259366048472213131}
-  bettyProfile: {fileID: 0}
-  rebeccaProfile: {fileID: 0}
-  ludvickProfile: {fileID: 0}
 --- !u!82 &1974502275938288041
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3566,7 +3560,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -3937,7 +3931,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4147,7 +4141,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
