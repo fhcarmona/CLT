@@ -5,7 +5,9 @@ using UnityEngine;
 public class PlayerCamera : MonoBehaviour
 {
     [SerializeField]
-    public float mSensitivity = 1.5f;
+    private float mSensitivity = 1.5f;
+    [SerializeField]
+    private GameObject flashlight;
 
     private float xMovement = 0f;
     private float yMovement = 0f;
@@ -48,6 +50,8 @@ public class PlayerCamera : MonoBehaviour
 
         // Head movement
         transform.eulerAngles = new Vector3(xMovement, yMovement, 0f);
+
+        flashlight.transform.eulerAngles = new Vector3(xMovement, yMovement, 0f);
     }
 
     private void InteractibleLook()
@@ -60,15 +64,16 @@ public class PlayerCamera : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactiveMaxDistance, ignoredLayer))
         {
-            Debug.Log(hit.transform.name);
-
             if (Input.GetKeyDown(KeyCode.E))
             {
                 InteractibleObjects func;
 
                 if (hit.transform.TryGetComponent<InteractibleObjects>(out func))
                 {
-                    func.Interact();
+                    if(hit.transform.name.Contains("Door") || hit.transform.name.Contains("Window"))
+                        func.ToggleDoor();
+                    else if (hit.transform.name.Contains("Light"))
+                        func.ToggleLight();
                 }
             }
         }

@@ -1,32 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractibleObjects : MonoBehaviour
 {
     [SerializeField]
-    public float maxRotationDegrees;
+    private bool initialToggle;
     [SerializeField]
-    public AxisEnum rotationAxis;
-    public enum AxisEnum {x, y, z};
+    private bool isEnable = true; // By default the object is enabled
+    [SerializeField]
+    private Light[] lightList; 
 
-    private bool isOriginalRotation = true;
+    private Animator animator;
 
-    public void Interact()
+    private void Awake()
     {
-        switch (rotationAxis)
+        if (transform.parent.TryGetComponent<Animator>(out animator))
         {
-            case AxisEnum.x:
-                this.transform.Rotate(new Vector3((isOriginalRotation ? maxRotationDegrees : maxRotationDegrees * -1), 0, 0));
-                break;
-            case AxisEnum.y:
-                this.transform.Rotate(new Vector3(0, (isOriginalRotation ? maxRotationDegrees : maxRotationDegrees * -1), 0));
-                break;
-            case AxisEnum.z:
-                this.transform.Rotate(new Vector3(0, 0, (isOriginalRotation ? maxRotationDegrees : maxRotationDegrees * -1)));
-                break;
+            ToggleDoor(initialToggle);
+            ToggleLight(initialToggle);
         }
+    }
 
-        isOriginalRotation = !isOriginalRotation;
+    public void ToggleDoor()
+    {
+        ToggleDoor(!animator.GetBool("WasActivated"));
+    }
+
+    public void ToggleDoor(bool isOpen)
+    {
+        // Check locked
+        if (isEnable)
+        {
+            animator.SetBool("WasActivated", isOpen);
+        }
+    }
+
+    public void ToggleLight()
+    {
+        ToggleLight(!animator.GetBool("WasActivated"));
+    }
+
+    public void ToggleLight(bool isOn)
+    {
+        // Check locked
+        if (isEnable)
+        {
+            animator.SetBool("WasActivated", isOn);
+
+            foreach (Light lightInstance in lightList)
+            {
+                lightInstance.gameObject.SetActive(isOn);
+            }
+        }
     }
 }
