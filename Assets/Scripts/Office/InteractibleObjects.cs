@@ -7,7 +7,7 @@ public class InteractibleObjects : MonoBehaviour
     [SerializeField]
     private bool isEnable = true; // By default the object is enabled
     [SerializeField]
-    private Light[] lightList; 
+    private GameObject[] lightObjectList; 
 
     private Animator animator;
 
@@ -46,9 +46,17 @@ public class InteractibleObjects : MonoBehaviour
         {
             animator.SetBool("WasActivated", isOn);
 
-            foreach (Light lightInstance in lightList)
+            foreach (GameObject lightObject in lightObjectList)
             {
-                lightInstance.gameObject.SetActive(isOn);
+                Light[] lightList = lightObject.GetComponentsInChildren<Light>();
+
+                foreach (Light lightInstance in lightList)
+                {
+                    if(isOn)
+                        lightInstance.intensity = 1;
+                    else
+                        lightInstance.intensity = 0;
+                }
             }
         }
     }
