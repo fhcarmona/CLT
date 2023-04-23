@@ -26,7 +26,7 @@ public class PlayerMovement : MonoBehaviour
             headBobbingAnim.speed = 0;
 
         transform.Translate(velocity * Time.deltaTime);
-        // Movement();
+        //Movement();
     }
 
     private void Movement()

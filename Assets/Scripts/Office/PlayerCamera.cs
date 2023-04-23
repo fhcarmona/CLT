@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class PlayerCamera : MonoBehaviour
 {
@@ -64,18 +65,29 @@ public class PlayerCamera : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, interactiveMaxDistance, ignoredLayer))
         {
+            DebugMode.SetHitObject(hit.transform.gameObject);
+
+            Moveable moveableClass;
+
             if (Input.GetKeyDown(KeyCode.E))
             {
-                InteractibleObjects func;
+                InteractibleObjects interactableClass;                
 
-                if (hit.transform.TryGetComponent<InteractibleObjects>(out func))
+                if (hit.transform.TryGetComponent<InteractibleObjects>(out interactableClass))
                 {
-                    if(hit.transform.name.Contains("Door") || hit.transform.name.Contains("Window"))
-                        func.ToggleDoor();
+                    if (hit.transform.name.Contains("Door") || hit.transform.name.Contains("Window"))
+                        interactableClass.ToggleDoor();
                     else if (hit.transform.name.Contains("Light"))
-                        func.ToggleLight();
+                        interactableClass.ToggleLight();
                 }
             }
+            
+            if (hit.transform.TryGetComponent<Moveable>(out moveableClass))
+            {
+                moveableClass.MoveableCheck();
+            }
         }
+        else
+            DebugMode.SetHitObject(null);
     }
 }
