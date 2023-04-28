@@ -510,7 +510,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialToggle: 0
-  lightList: []
+  isEnable: 1
+  lightObjectList: []
 --- !u!1 &5757640036036705567
 GameObject:
   m_ObjectHideFlags: 0

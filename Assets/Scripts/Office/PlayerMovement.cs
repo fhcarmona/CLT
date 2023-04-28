@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField]
     private float speed = 2.5f;
     [SerializeField]
-    private Animator headBobbingAnim;
+    private Animator animator;
 
     private Vector3 velocity = Vector3.zero;
 
@@ -20,10 +20,10 @@ public class PlayerMovement : MonoBehaviour
         velocity.x = Input.GetAxis(xAxis) * speed; // Left Right
         velocity.z = Input.GetAxis(zAxis) * speed; // Forward Backward
 
-        if (velocity.z != 0)
-            headBobbingAnim.speed = 1;
+        if (velocity.x != 0 || velocity.z != 0)
+            animator.SetBool("IsMoving", true);
         else
-            headBobbingAnim.speed = 0;
+            animator.SetBool("IsMoving", false);
 
         transform.Translate(velocity * Time.deltaTime);
         //Movement();

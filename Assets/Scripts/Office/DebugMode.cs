@@ -7,6 +7,7 @@ public class DebugMode : MonoBehaviour
 {
     private static TextMeshProUGUI debugInfo;
     private static GameObject raycastObject;
+    private static string additionalInfo;
 
     public void Start()
     {
@@ -26,8 +27,14 @@ public class DebugMode : MonoBehaviour
             AddDebugText($"Position[{raycastObject.transform.position}], ");
             AddDebugText($"Quaternion[{raycastObject.transform.rotation}], ");
             AddDebugText($"Interactable[{raycastObject.TryGetComponent<InteractibleObjects>(out interactClass)}], ");
-            AddDebugText($"Moveable[{raycastObject.TryGetComponent<Moveable>(out moveableClass)}]");
+            AddDebugText($"Moveable[{raycastObject.TryGetComponent<Moveable>(out moveableClass)}], ");
+            AddDebugText($"Additional Info[{additionalInfo}]");
         }
+    }
+
+    public static void SetAdditionalInfo(string info)
+    {
+        additionalInfo = info;
     }
 
     public static void SetHitObject(GameObject hitObject)

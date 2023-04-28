@@ -84,7 +84,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3949586053989836803}
   m_LocalRotation: {x: -0.7071068, y: -0, z: -0, w: 0.7071067}
-  m_LocalPosition: {x: 0.5766268, y: 1.0968132, z: 0}
+  m_LocalPosition: {x: 0.5766183, y: 1.0968132, z: -0.039626125}
   m_LocalScale: {x: 288.84216, y: 9.499999, z: 106.7304}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -119,7 +119,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 4874126678125670354, guid: d0c7e7c31e42cde498b8bfed86219e0b, type: 3}
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -405,7 +405,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d354a65ec1c131e4ba4023e5230ce381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isOpen: 0
+  initialToggle: 0
+  isEnable: 1
+  lightObjectList: []
 --- !u!65 &665665744663159378
 BoxCollider:
   m_ObjectHideFlags: 0

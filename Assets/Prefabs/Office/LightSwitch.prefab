@@ -58,8 +58,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d354a65ec1c131e4ba4023e5230ce381, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialToggle: 0
-  lightList: []
+  initialToggle: 1
+  isEnable: 1
+  lightObjectList: []
 --- !u!1 &4140841625133448656
 GameObject:
   m_ObjectHideFlags: 0
@@ -159,7 +160,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &6364878437569110662
 Transform:

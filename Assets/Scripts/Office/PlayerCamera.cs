@@ -35,6 +35,15 @@ public class PlayerCamera : MonoBehaviour
         InteractibleLook();
 
         MouseLook();
+
+        if (Input.GetKeyDown(KeyCode.F))
+            ToggleFlashlight();
+    }
+
+    private void ToggleFlashlight()
+    {
+        foreach (Light lantern in GetComponentsInChildren<Light>(true))
+            lantern.gameObject.SetActive(!lantern.gameObject.activeSelf);
     }
 
     private void MouseLook()
