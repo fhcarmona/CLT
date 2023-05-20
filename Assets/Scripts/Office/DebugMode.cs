@@ -16,8 +16,11 @@ public class DebugMode : MonoBehaviour
 
     public void Update()
     {
-        InteractibleObjects interactClass;
-        Moveable moveableClass;
+        if (Input.GetKeyDown(KeyCode.P))
+            Time.timeScale = (Time.timeScale == 0 ? 1 : 0);
+
+        LightSourceController lightClass;
+        DoorController doorController;
 
         if (raycastObject == null)
             SetDebugText("Debug.Information");
@@ -26,8 +29,8 @@ public class DebugMode : MonoBehaviour
             SetDebugText($"Object[{raycastObject.name}]");
             AddDebugText($"Position[{raycastObject.transform.position}], ");
             AddDebugText($"Quaternion[{raycastObject.transform.rotation}], ");
-            AddDebugText($"Interactable[{raycastObject.TryGetComponent<InteractibleObjects>(out interactClass)}], ");
-            AddDebugText($"Moveable[{raycastObject.TryGetComponent<Moveable>(out moveableClass)}], ");
+            AddDebugText($"HasLight[{raycastObject.TryGetComponent<LightSourceController>(out lightClass)}], ");
+            AddDebugText($"IsDoor[{raycastObject.TryGetComponent<DoorController>(out doorController)}], ");
             AddDebugText($"Additional Info[{additionalInfo}]");
         }
     }

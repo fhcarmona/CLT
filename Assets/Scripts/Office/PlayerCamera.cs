@@ -29,15 +29,18 @@ public class PlayerCamera : MonoBehaviour
     // FixedUpdate is called once per frame, before update
     void LateUpdate()
     {
-        Vector3 forward = transform.TransformDirection(Vector3.forward) * interactiveMaxDistance;
-        Debug.DrawRay(transform.position, forward, Color.green);
+        if (Time.timeScale != 0)
+        {
+            Vector3 forward = transform.TransformDirection(Vector3.forward) * interactiveMaxDistance;
+            Debug.DrawRay(transform.position, forward, Color.green);
 
-        InteractibleLook();
+            InteractibleLook();
 
-        MouseLook();
+            MouseLook();
 
-        if (Input.GetKeyDown(KeyCode.F))
-            ToggleFlashlight();
+            if (Input.GetKeyDown(KeyCode.F))
+                ToggleFlashlight();
+        }
     }
 
     private void ToggleFlashlight()
@@ -76,7 +79,21 @@ public class PlayerCamera : MonoBehaviour
         {
             DebugMode.SetHitObject(hit.transform.gameObject);
 
-            Moveable moveableClass;
+            // Interact classes
+            LightSourceController lightController;
+            DoorController doorController;
+
+            if (hit.transform.TryGetComponent<LightSourceController>(out lightController))
+            {
+                lightController.InteractCheck();
+            }
+
+            if (hit.transform.TryGetComponent<DoorController>(out doorController))
+            {
+                doorController.InteractCheck();
+            }
+
+            /*Moveable moveableClass;
 
             if (Input.GetKeyDown(KeyCode.E))
             {
@@ -84,7 +101,12 @@ public class PlayerCamera : MonoBehaviour
 
                 if (hit.transform.TryGetComponent<InteractibleObjects>(out interactableClass))
                 {
-                    if (hit.transform.name.Contains("Door") || hit.transform.name.Contains("Window"))
+                    if (hit.transform.name.Contains("Door") ||
+                        // Windows
+                        hit.transform.name.Equals("FSL") ||
+                        hit.transform.name.Equals("FSR") ||
+                        hit.transform.name.Equals("MSL") ||
+                        hit.transform.name.Equals("MSR"))
                         interactableClass.ToggleDoor();
                     else if (hit.transform.name.Contains("Light"))
                         interactableClass.ToggleLight();
@@ -95,6 +117,7 @@ public class PlayerCamera : MonoBehaviour
             {
                 moveableClass.MoveableCheck();
             }
+            */
         }
         else
             DebugMode.SetHitObject(null);
