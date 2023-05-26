@@ -17,28 +17,27 @@ public class PlayerMovement : MonoBehaviour
     // FixedUpdate is called once per frame, before update
     void FixedUpdate()
     {
-        velocity.x = Input.GetAxis(xAxis) * speed; // Left Right
-        velocity.z = Input.GetAxis(zAxis) * speed; // Forward Backward
-
-        if (velocity.x != 0 || velocity.z != 0)
-            animator.SetBool("IsMoving", true);
-        else
-            animator.SetBool("IsMoving", false);
-
-        transform.Translate(velocity * Time.deltaTime);
-        //Movement();
+        if(!StatesController.isOnComputer && !StatesController.isPaused)
+            Movement();
     }
 
     private void Movement()
     {
-        // Running
-        if (Input.GetKeyDown(KeyCode.LeftShift))
-            speed *= 2f;
-        else if (Input.GetKeyUp(KeyCode.LeftShift))
-            speed /= 2f;
-
         velocity.x = Input.GetAxis(xAxis) * speed; // Left Right
         velocity.z = Input.GetAxis(zAxis) * speed; // Forward Backward
+
+        if (velocity.x != 0 || velocity.z != 0)
+        {
+            animator.SetBool("IsMoving", true);
+
+            if (!GetComponent<AudioSource>().isPlaying)
+                GetComponent<AudioSource>().Play();
+        }
+        else
+        {
+            animator.SetBool("IsMoving", false);
+            GetComponent<AudioSource>().Stop();
+        }
 
         transform.Translate(velocity * Time.deltaTime);
     }

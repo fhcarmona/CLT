@@ -23,13 +23,12 @@ public class PlayerCamera : MonoBehaviour
     void Awake()
     {
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // FixedUpdate is called once per frame, before update
     void LateUpdate()
     {
-        if (Time.timeScale != 0)
+        if (!StatesController.isPaused)
         {
             Vector3 forward = transform.TransformDirection(Vector3.forward) * interactiveMaxDistance;
             Debug.DrawRay(transform.position, forward, Color.green);
@@ -38,15 +37,23 @@ public class PlayerCamera : MonoBehaviour
 
             MouseLook();
 
-            if (Input.GetKeyDown(KeyCode.F))
+            if (Input.GetKeyDown(KeyCode.F) && StatesController.hasLight && !StatesController.isPaused && !StatesController.isOnComputer)
                 ToggleFlashlight();
         }
     }
 
+    // Invert active flashlight and eye adaptation light
     private void ToggleFlashlight()
     {
         foreach (Light lantern in GetComponentsInChildren<Light>(true))
             lantern.gameObject.SetActive(!lantern.gameObject.activeSelf);
+    }
+
+    // Verify if flashlight is on
+    private bool IsFlashlightOn()
+    {
+        // Find the active light component (ignore non-active)
+        return GetComponentInChildren<Light>().name == "Flashlight";
     }
 
     private void MouseLook()
@@ -75,51 +82,53 @@ public class PlayerCamera : MonoBehaviour
 
         int ignoredLayer =~ LayerMask.GetMask("Player");
 
-        if (Physics.Raycast(ray, out hit, interactiveMaxDistance, ignoredLayer))
+        if (Physics.Raycast(ray, out hit, interactiveMaxDistance, ignoredLayer) && !StatesController.isPaused && !StatesController.isOnComputer)
         {
             DebugMode.SetHitObject(hit.transform.gameObject);
 
             // Interact classes
             LightSourceController lightController;
             DoorController doorController;
+            ComputerController computerController;
+            ItemController itemController;
+            Moveable moveable;
+
+            PentagramPuzzle pentagramPuzzle;
 
             if (hit.transform.TryGetComponent<LightSourceController>(out lightController))
             {
                 lightController.InteractCheck();
             }
-
-            if (hit.transform.TryGetComponent<DoorController>(out doorController))
+            else if (hit.transform.TryGetComponent<DoorController>(out doorController))
             {
                 doorController.InteractCheck();
             }
-
-            /*Moveable moveableClass;
-
-            if (Input.GetKeyDown(KeyCode.E))
+            else if (hit.transform.TryGetComponent<ComputerController>(out computerController))
             {
-                InteractibleObjects interactableClass;                
+                if (IsFlashlightOn() && Input.GetKeyDown(KeyCode.E))
+                    ToggleFlashlight();
 
-                if (hit.transform.TryGetComponent<InteractibleObjects>(out interactableClass))
-                {
-                    if (hit.transform.name.Contains("Door") ||
-                        // Windows
-                        hit.transform.name.Equals("FSL") ||
-                        hit.transform.name.Equals("FSR") ||
-                        hit.transform.name.Equals("MSL") ||
-                        hit.transform.name.Equals("MSR"))
-                        interactableClass.ToggleDoor();
-                    else if (hit.transform.name.Contains("Light"))
-                        interactableClass.ToggleLight();
-                }
+                computerController.InteractCheck();
             }
-            
-            if (hit.transform.TryGetComponent<Moveable>(out moveableClass))
+            else if (hit.transform.TryGetComponent<ItemController>(out itemController))
             {
-                moveableClass.MoveableCheck();
+                itemController.InteractCheck();
             }
-            */
+            else if (hit.transform.TryGetComponent<Moveable>(out moveable))
+            {
+                moveable.InteractCheck();
+            }
+            else if (hit.transform.parent.parent.TryGetComponent<PentagramPuzzle>(out pentagramPuzzle))
+            {
+                pentagramPuzzle.SquareCheck(hit.transform.gameObject);
+            }
+            else
+                DebugMode.InteractiveInfo();
         }
         else
+        {
             DebugMode.SetHitObject(null);
+            DebugMode.InteractiveInfo();
+        }
     }
 }

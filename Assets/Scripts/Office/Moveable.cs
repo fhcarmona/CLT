@@ -7,23 +7,16 @@ public class Moveable : MonoBehaviour
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
-    private Rigidbody objPhysics;
-
     // Start is called before the first frame update
     void Start()
     {
         initialPosition = transform.position;
         initialRotation = transform.rotation;
-
-        objPhysics = GetComponent<Rigidbody>();
     }
 
-    public void MoveableCheck()
+    public void InteractCheck()
     {
-        if (Input.GetKey(KeyCode.Z))
-            objPhysics.isKinematic = false;
-        else
-            objPhysics.isKinematic = true;
+        DebugMode.InteractiveInfo("Pressione R para reiniciar posição");
 
         if (Input.GetKeyDown(KeyCode.R))
         {

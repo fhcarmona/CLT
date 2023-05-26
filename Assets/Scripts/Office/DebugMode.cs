@@ -5,22 +5,44 @@ using TMPro;
 
 public class DebugMode : MonoBehaviour
 {
+    private static TextMeshProUGUI pauseInfo;
     private static TextMeshProUGUI debugInfo;
+    private static TextMeshProUGUI interactiveInfo;
     private static GameObject raycastObject;
     private static string additionalInfo;
 
     public void Start()
     {
-        debugInfo = GetComponentInChildren<TextMeshProUGUI>();
+        debugInfo = GameObject.Find("Information").GetComponent<TextMeshProUGUI>();
+        interactiveInfo = GameObject.Find("InteractiveInfo").GetComponent<TextMeshProUGUI>();
+        pauseInfo = GameObject.Find("PauseInfo").GetComponent<TextMeshProUGUI>();
     }
 
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
+        {
             Time.timeScale = (Time.timeScale == 0 ? 1 : 0);
+
+            if (Time.timeScale == 0)
+            {
+                pauseInfo.text = "Jogo Pausado";
+                StatesController.isPaused = true;
+            }
+            else
+            {
+                pauseInfo.text = ".";
+                StatesController.isPaused = false;
+            }
+            
+        }
+
+        if (Input.GetKeyDown(KeyCode.End))
+            Application.Quit();
 
         LightSourceController lightClass;
         DoorController doorController;
+        Moveable moveable;
 
         if (raycastObject == null)
             SetDebugText("Debug.Information");
@@ -29,8 +51,9 @@ public class DebugMode : MonoBehaviour
             SetDebugText($"Object[{raycastObject.name}]");
             AddDebugText($"Position[{raycastObject.transform.position}], ");
             AddDebugText($"Quaternion[{raycastObject.transform.rotation}], ");
-            AddDebugText($"HasLight[{raycastObject.TryGetComponent<LightSourceController>(out lightClass)}], ");
-            AddDebugText($"IsDoor[{raycastObject.TryGetComponent<DoorController>(out doorController)}], ");
+            AddDebugText($"Light[{raycastObject.TryGetComponent<LightSourceController>(out lightClass)}], ");
+            AddDebugText($"Door[{raycastObject.TryGetComponent<DoorController>(out doorController)}], ");
+            AddDebugText($"Moveable[{raycastObject.TryGetComponent<Moveable>(out moveable)}], ");
             AddDebugText($"Additional Info[{additionalInfo}]");
         }
     }
@@ -61,5 +84,24 @@ public class DebugMode : MonoBehaviour
     public static void ResetText()
     {
         debugInfo.text = null;
+    }
+
+    public static void InteractiveInfo()
+    {
+        interactiveInfo.text = "";
+    }
+
+    public static void InteractiveInfo(string info)
+    {
+        interactiveInfo.text = info;
+    }
+
+    public static void SetActiveCamera(Camera camera)
+    {
+        foreach (Camera otherCam in FindObjectsByType<Camera>(FindObjectsSortMode.None))
+            if (otherCam.tag != "ComputerCamera")
+                otherCam.tag = "Untagged";
+
+        camera.tag = "MainCamera";
     }
 }

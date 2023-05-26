@@ -36,8 +36,6 @@ public class DesktopApplications : MonoBehaviour
         // One per time
         if (appInstance == null)
         {
-            Debug.Log($"New[{apps[index].name}]");
-
             GameObject prefabApp = Instantiate(apps[index], appParent.transform);
             GameObject taskbarPrefabApp = Instantiate(taskbarApps[index], taskbarParent.transform);
 

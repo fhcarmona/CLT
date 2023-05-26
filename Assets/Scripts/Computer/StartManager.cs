@@ -28,18 +28,22 @@ public class StartManager : MonoBehaviour
     // Menubar system
     public void ShutDown()
     {
-        Application.Quit();
+        //Application.Quit();
     }
 
     public void Logoff()
     {
+        /*
         Cursor.visible = true;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        */
     }
 
     public void Configuration()
     {
+        /*
         Cursor.visible = true;
         SceneManager.LoadScene("Options", LoadSceneMode.Additive);
+        */
     }
 }
