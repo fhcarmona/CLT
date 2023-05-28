@@ -5,59 +5,58 @@ using UnityEngine;
 public class ComputerController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject screenPrefab;
+    private GameObject screenPrefab;    
     [SerializeField]
+    private AudioSource morseAudio;
+
     private AudioClip sittingSound;
-
-    private GameObject playerInstance;
-    private GameObject computerCamera;
     private AudioSource audioSource;
-
-    private Camera playerCamera;
 
     public void Start()
     {
         audioSource = GetComponent<AudioSource>();
-        playerInstance = GameObject.Find("Player");
-        computerCamera = transform.parent.GetComponentInChildren<Camera>(true).gameObject;
-
-        playerCamera = playerInstance.GetComponentInChildren<Camera>();
+        
     }
 
     public void Update()
     {
-        ComputerStandUp();
+        //ComputerStandUp();
     }
 
     public void InteractCheck()
     {
-        DebugMode.InteractiveInfo("Pressione E para sentar");
+        DebugMode.InteractiveInfo("Pressione E para interagir");
 
-        ComputerSitting();
+        if (Input.GetKeyDown(KeyCode.E))
+            StartComputer();
+    }
+
+    public void PlaySittingSound()
+    {
+        audioSource.mute = false;
+
+        if (!audioSource.isPlaying)
+            audioSource.Stop();
+
+        audioSource.PlayOneShot(sittingSound); // Opening sfx
     }
 
     public void ComputerSitting()
     {
-        if (Input.GetKeyDown(KeyCode.E) && !StatesController.isOnComputer)
-        {
-            playerCamera.enabled = false;
-            computerCamera.SetActive(true);
+        if (!StatesController.isOnComputer)
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                PlaySittingSound();
 
-            //DebugMode.SetActiveCamera(computerCamera.GetComponentInChildren<Camera>());
+                StartComputer();
 
-            StatesController.isOnComputer = true;
+                StatesController.isOnComputer = true;
+            }
+    }
 
-            audioSource.mute = false;
-
-            if (!audioSource.isPlaying)
-                audioSource.Stop();
-
-            audioSource.PlayOneShot(sittingSound); // Opening sfx
-
-            // Turn on the monitor
-            if (screenPrefab != null)
-                screenPrefab.SetActive(true);
-        }
+    public void StartComputer()
+    {
+        screenPrefab.SetActive(!screenPrefab.activeSelf);
     }
 
     public void ComputerStandUp()
@@ -68,19 +67,9 @@ public class ComputerController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                computerCamera.SetActive(false);
-                playerCamera.enabled = true;
-
-                //DebugMode.SetActiveCamera(playerInstance.GetComponentInChildren<Camera>());
+                PlaySittingSound();
 
                 StatesController.isOnComputer = false;
-
-                audioSource.mute = false;
-
-                if (!audioSource.isPlaying)
-                    audioSource.Stop();
-
-                audioSource.PlayOneShot(sittingSound); // Opening sfx
             }
         }
     }

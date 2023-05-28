@@ -28,7 +28,7 @@ public class PlayerCamera : MonoBehaviour
     // FixedUpdate is called once per frame, before update
     void LateUpdate()
     {
-        if (!StatesController.isPaused)
+        if (!StatesController.isPaused && !StatesController.isOnComputer)
         {
             Vector3 forward = transform.TransformDirection(Vector3.forward) * interactiveMaxDistance;
             Debug.DrawRay(transform.position, forward, Color.green);
