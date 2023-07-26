@@ -373,7 +373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &596512426
 RectTransform:
   m_ObjectHideFlags: 0
@@ -549,7 +549,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: .
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -986,7 +986,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1203765074
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1274,6 +1274,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2748843671673325459, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3222479681122069837, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
       propertyPath: MaxDistance
       value: 0.01
@@ -1281,6 +1285,10 @@ PrefabInstance:
     - target: {fileID: 3222479681122069837, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
       propertyPath: MinDistance
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3551135293298238681, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
+      propertyPath: m_Intensity
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 4836099866104034953, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
       propertyPath: m_Name
@@ -1344,6 +1352,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4836099867018126186, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4836099867018126186, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4836099867339612926, guid: ec49d15a97788c644b9a17760b69ccda, type: 3}

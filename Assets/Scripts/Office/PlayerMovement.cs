@@ -21,24 +21,32 @@ public class PlayerMovement : MonoBehaviour
             Movement();
     }
 
+    // Player simple movement
     private void Movement()
     {
         velocity.x = Input.GetAxis(xAxis) * speed; // Left Right
         velocity.z = Input.GetAxis(zAxis) * speed; // Forward Backward
 
+        // Detect move changes
         if (velocity.x != 0 || velocity.z != 0)
         {
+            // Change animation variable
             animator.SetBool("IsMoving", true);
 
+            // Walking sound
             if (!GetComponent<AudioSource>().isPlaying)
                 GetComponent<AudioSource>().Play();
         }
         else
         {
+            // Change animation variable
             animator.SetBool("IsMoving", false);
+
+            // Stop sound
             GetComponent<AudioSource>().Stop();
         }
 
+        // Move the player in the direction and distance of translation
         transform.Translate(velocity * Time.deltaTime);
     }
 }
